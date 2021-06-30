@@ -7,36 +7,34 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DAL.DBContext;
 using DAL.Models;
+using DAL.Repositories;
 
 namespace WAD.APP._8302.Controllers
 {
     public class CitiesController : Controller
     {
+        private readonly IRepository<City> _cityRepository;
         private readonly Context _context;
 
-        public CitiesController(Context context)
+
+        public CitiesController(IRepository<City> cityRepository, Context context)
         {
+            _cityRepository = cityRepository;
             _context = context;
         }
 
         // GET: Cities
         public async Task<IActionResult> Index()
         {
-            var context = _context.City.Include(c => c.Country);
-            return View(await context.ToListAsync());
+            return View(await _cityRepository.GetAllAsync());
         }
 
         // GET: Cities/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            var city = await _cityRepository.GetByIdAsync(id);
 
-            var city = await _context.City
-                .Include(c => c.Country)
-                .FirstOrDefaultAsync(m => m.Id == id);
+
             if (city == null)
             {
                 return NotFound();
@@ -61,15 +59,12 @@ namespace WAD.APP._8302.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(city);
-                await _context.SaveChangesAsync();
+                await _cityRepository.CreateAsync(city);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CountryId"] = new SelectList(_context.Country, "Id", "Capital", city.CountryId);
             return View(city);
         }
 
-        // GET: Cities/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -82,7 +77,7 @@ namespace WAD.APP._8302.Controllers
             {
                 return NotFound();
             }
-            ViewData["CountryId"] = new SelectList(_context.Country, "Id", "Capital", city.CountryId);
+            ViewData["CountryId"] = new SelectList(_context.Country, "Id", "Name", city.CountryId);
             return View(city);
         }
 
@@ -107,32 +102,18 @@ namespace WAD.APP._8302.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CityExists(city.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    return NotFound();
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CountryId"] = new SelectList(_context.Country, "Id", "Capital", city.CountryId);
+            ViewData["CountryId"] = new SelectList(_context.Country, "Id", "Name", city.CountryId);
             return View(city);
         }
-
         // GET: Cities/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            var city = await _cityRepository.GetByIdAsync(id);
 
-            var city = await _context.City
-                .Include(c => c.Country)
-                .FirstOrDefaultAsync(m => m.Id == id);
             if (city == null)
             {
                 return NotFound();
@@ -146,15 +127,9 @@ namespace WAD.APP._8302.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var city = await _context.City.FindAsync(id);
-            _context.City.Remove(city);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+            await _cityRepository.DeleteAsync(id);
 
-        private bool CityExists(int id)
-        {
-            return _context.City.Any(e => e.Id == id);
+            return RedirectToAction(nameof(Index));
         }
     }
 }

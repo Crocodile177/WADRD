@@ -42,7 +42,6 @@ C:\Users\Администратор\Documents\WAD RD\WADRD\WAD.APP.8302\WAD.APP.
 C:\Users\Администратор\Documents\WAD RD\WADRD\WAD.APP.8302\WAD.APP.8302\obj\Debug\net5.0\WAD.APP.8302.TagHelpers.output.cache
 C:\Users\Администратор\Documents\WAD RD\WADRD\WAD.APP.8302\WAD.APP.8302\obj\Debug\net5.0\WAD.APP.8302.RazorCoreGenerate.cache
 C:\Users\Администратор\Documents\WAD RD\WADRD\WAD.APP.8302\WAD.APP.8302\obj\Debug\net5.0\Razor\Views\Home\Index.cshtml.g.cs
-C:\Users\Администратор\Documents\WAD RD\WADRD\WAD.APP.8302\WAD.APP.8302\obj\Debug\net5.0\Razor\Views\Home\Privacy.cshtml.g.cs
 C:\Users\Администратор\Documents\WAD RD\WADRD\WAD.APP.8302\WAD.APP.8302\obj\Debug\net5.0\Razor\Views\Shared\Error.cshtml.g.cs
 C:\Users\Администратор\Documents\WAD RD\WADRD\WAD.APP.8302\WAD.APP.8302\obj\Debug\net5.0\Razor\Views\Shared\_Layout.cshtml.g.cs
 C:\Users\Администратор\Documents\WAD RD\WADRD\WAD.APP.8302\WAD.APP.8302\obj\Debug\net5.0\Razor\Views\Shared\_ValidationScriptsPartial.cshtml.g.cs
@@ -156,3 +155,4 @@ C:\Users\Администратор\Documents\WAD RD\WADRD\WAD.APP.8302\WAD.APP.
 C:\Users\Администратор\Documents\WAD RD\WADRD\WAD.APP.8302\WAD.APP.8302\obj\Debug\net5.0\Razor\Views\Cities\Details.cshtml.g.cs
 C:\Users\Администратор\Documents\WAD RD\WADRD\WAD.APP.8302\WAD.APP.8302\obj\Debug\net5.0\Razor\Views\Cities\Edit.cshtml.g.cs
 C:\Users\Администратор\Documents\WAD RD\WADRD\WAD.APP.8302\WAD.APP.8302\obj\Debug\net5.0\Razor\Views\Cities\Index.cshtml.g.cs
+C:\Users\Администратор\Documents\WAD RD\WADRD\WAD.APP.8302\WAD.APP.8302\obj\Debug\net5.0\Razor\Views\Home\Privacy.cshtml.g.cs

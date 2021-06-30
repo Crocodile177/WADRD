@@ -7,34 +7,30 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DAL.DBContext;
 using DAL.Models;
+using DAL.Repositories;
 
 namespace WAD.APP._8302.Controllers
 {
     public class CountriesController : Controller
     {
-        private readonly Context _context;
-
-        public CountriesController(Context context)
+        private readonly IRepository<Country> _countryRepository;
+        public CountriesController(IRepository<Country> countryRepository)
         {
-            _context = context;
+            _countryRepository = countryRepository;
         }
 
         // GET: Countries
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Country.ToListAsync());
+            return View(await _countryRepository.GetAllAsync());
         }
 
         // GET: Countries/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
 
-            var country = await _context.Country
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var country = await _countryRepository.GetByIdAsync(id);
+
             if (country == null)
             {
                 return NotFound();
@@ -58,22 +54,16 @@ namespace WAD.APP._8302.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(country);
-                await _context.SaveChangesAsync();
+                await _countryRepository.CreateAsync(country);
                 return RedirectToAction(nameof(Index));
             }
             return View(country);
         }
 
         // GET: Countries/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var country = await _context.Country.FindAsync(id);
+            var country = await _countryRepository.GetByIdAsync(id);
             if (country == null)
             {
                 return NotFound();
@@ -97,19 +87,11 @@ namespace WAD.APP._8302.Controllers
             {
                 try
                 {
-                    _context.Update(country);
-                    await _context.SaveChangesAsync();
+                    await _countryRepository.UpdateAsync(country);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CountryExists(country.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    return NotFound();
                 }
                 return RedirectToAction(nameof(Index));
             }
@@ -117,15 +99,11 @@ namespace WAD.APP._8302.Controllers
         }
 
         // GET: Countries/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
 
-            var country = await _context.Country
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var country = await _countryRepository.GetByIdAsync(id);
+
             if (country == null)
             {
                 return NotFound();
@@ -139,15 +117,10 @@ namespace WAD.APP._8302.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var country = await _context.Country.FindAsync(id);
-            _context.Country.Remove(country);
-            await _context.SaveChangesAsync();
+            await _countryRepository.DeleteAsync(id);
+
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CountryExists(int id)
-        {
-            return _context.Country.Any(e => e.Id == id);
-        }
     }
 }
